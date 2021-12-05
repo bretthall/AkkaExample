@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AkkaExample", "AkkaExample\AkkaExample.fsproj", "{F27E0504-5FAC-4B20-A09A-6FDCA8181EC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F27E0504-5FAC-4B20-A09A-6FDCA8181EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27E0504-5FAC-4B20-A09A-6FDCA8181EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27E0504-5FAC-4B20-A09A-6FDCA8181EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27E0504-5FAC-4B20-A09A-6FDCA8181EC8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
