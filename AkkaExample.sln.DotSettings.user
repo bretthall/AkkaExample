@@ -1,0 +1,11 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=012a206d_002D353b_002D4cb2_002D9f3d_002D233811ae669d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="StorageTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::07FFEBCA-DC1A-4704-A97E-2A372E65BD54::net5.0::Tests.StorageTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4dc612a5_002Db9be_002D44eb_002Db7ce_002D289cfb003e91/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="StorageTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::07FFEBCA-DC1A-4704-A97E-2A372E65BD54::net5.0::Tests.StorageTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

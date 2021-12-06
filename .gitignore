@@ -1,1 +1,3 @@
 /AkkaExample/obj
+/Tests/obj
+**/bin
