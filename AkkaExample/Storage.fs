@@ -22,24 +22,22 @@ type StorageMsg =
 
 let startStorageActor parent =
     
-    Akkling.Spawn.spawn parent "storage" (Akkling.Props.props <| fun (ctx: Akkling.Actors.Actor<StorageMsg>) ->
+    Akkling.Spawn.spawn parent "storage"
+        (Akkling.Props.props <| fun (ctx: Akkling.Actors.Actor<StorageMsg>) ->
         
-        let rec handleMsgs values msg =
-            match msg with
-            | Query query ->
-                Akkling.Logging.logDebug ctx $"Got query for {query.key}"
-                query.receiver <! {
-                    key = query.key
-                    value = values |> Map.tryFind query.key
-                }
-                Akkling.Spawn.ignored msg
-            | Update update ->
-                Akkling.Logging.logDebug ctx $"Got update for {update.key}: {update.value}"
-                let newValues = Map.add update.key update.value values
-                Akkling.Spawn.become (handleMsgs newValues)    
-            | Stop ->
-                Akkling.Logging.logDebug ctx "Got stop message"
-                Akkling.Spawn.stop ()
-                
-        Akkling.Spawn.become (handleMsgs Map.empty)
-    )
+            let rec handleMsgs values msg =
+                match msg with
+                | Query query ->
+                    query.receiver <! {
+                        key = query.key
+                        value = values |> Map.tryFind query.key
+                    }
+                    Akkling.Spawn.ignored msg
+                | Update update ->
+                    let newValues = Map.add update.key update.value values
+                    Akkling.Spawn.become (handleMsgs newValues)    
+                | Stop ->
+                    Akkling.Spawn.stop ()
+                    
+            Akkling.Spawn.become (handleMsgs Map.empty)
+        )

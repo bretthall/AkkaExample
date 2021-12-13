@@ -14,7 +14,8 @@ The resturn value of `spawn` has type `Akkling.ActorRefs.IActorRef<'msg>`. This 
 This typing does have some subtlety though. It turns out an actor can have lots of message types. The first type is the type that it processes. This is fixed by the function passed to `props` when creating the actor. We can also control the message type on actor references using the `Akkling.ActorRefs.retype` function. Let's create our actor in a more verbose fashion. It will still ignore everything, but now we'll take control of our message types:
 ```
 let makeActor parent name =
-    let start (_ctx: Akkling.Actors.Actor<obj>) = Akkling.Spawn.become Akkling.Spawn.ignored
+    let start (_ctx: Akkling.Actors.Actor<obj>) = 
+        Akkling.Spawn.become Akkling.Spawn.ignored
     let actorProps = Akkling.Props.props start
     Akkling.Spawn.spawn parent name actorProps
 ```
@@ -23,7 +24,8 @@ We've now encapsulated our actor creation inside of a function. We've also chang
 Now, say that we only want the caller of `makeActor` to send strings to the actor, but we still want to be able to process other message types as well. This comes up more often than you might think at first glance, usually due to the need to process messages from the actor system which have their own types. To do this we need to add a few things to the example:
 ```
 let makeActor parent name : IActorRef<string> =
-    let start (_ctx: Akkling.Actors.Actor<obj>) = Akkling.Spawn.become Akkling.Spawn.ignored
+    let start (_ctx: Akkling.Actors.Actor<obj>) = 
+        Akkling.Spawn.become Akkling.Spawn.ignored
     let actorProps = Akkling.Props.props start
     let actor = Akkling.Spawn.spawn parent name actorProps
     Akkling.ActorRefs.retype actor
@@ -58,27 +60,25 @@ So now, how do the messages get processed? Like so:
 ```
 let startStorageActor parent =
     
-    Akkling.Spawn.spawn parent "storage" (Akkling.Props.props <| fun (ctx: Akkling.Actors.Actor<StorageMsg>) ->
+    Akkling.Spawn.spawn parent "storage"
+        (Akkling.Props.props <| fun (ctx: Akkling.Actors.Actor<StorageMsg>) ->
         
-        let rec handleMsgs values msg =
-            match msg with
-            | Query query ->
-                Akkling.Logging.logDebug ctx $"Got query for {query.key}"
-                query.receiver <! {
-                    key = query.key
-                    value = values |> Map.tryFind query.key
-                }
-                Akkling.Spawn.ignored msg
-            | Update update ->
-                Akkling.Logging.logDebug ctx $"Got update for {update.key}: {update.value}"
-                let newValues = Map.add update.key update.value values
-                Akkling.Spawn.become (handleMsgs newValues)    
-            | Stop ->
-                Akkling.Logging.logDebug ctx "Got stop message"
-                Akkling.Spawn.stop ()
-                
-        Akkling.Spawn.become (handleMsgs Map.empty)
-    )
+            let rec handleMsgs values msg =
+                match msg with
+                | Query query ->
+                    query.receiver <! {
+                        key = query.key
+                        value = values |> Map.tryFind query.key
+                    }
+                    Akkling.Spawn.ignored msg
+                | Update update ->
+                    let newValues = Map.add update.key update.value values
+                    Akkling.Spawn.become (handleMsgs newValues)    
+                | Stop ->
+                    Akkling.Spawn.stop ()
+                    
+            Akkling.Spawn.become (handleMsgs Map.empty)
+        )
 ```
 As before, we call `spawn`, pass it the parent, a name, and properties. In this case, the properties have the message handling lambda function bound into them. That lambda defines an inner function, `handleMessages`, that, well, handles messages. We pass it to `become` in order to make it the function that handles the messages. Note that `handleMessages` takes two arguments: the currently set values and the message to process. Akkling supplies the message, but where do the values come from? Note that when we call `become` we partially apply `handleMessages` to `Map.empty` turning it into a `StorageMsg -> Effect<StorageMsg>` function. If you look at the match case for `Update` you'll also see `become (handleMsgs newValues)`. So to update the *state* of the actor we use partial application with the message handling function. 
 
