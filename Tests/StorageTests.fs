@@ -8,24 +8,12 @@ open Akkling
 open AkkaExample.Storage
 
 [<Test>]
-let ``update gives correct result`` () =
-    TestKit.testDefault <| fun tk ->
-        let receiver = tk.CreateTestProbe "receiver"
-        let storage = startStorageActor tk.Sys
-        
-        let key = "key"
-        let value = "value"
-        storage <! Update {|key = key; value = value; receiver = typed receiver|}
-        
-        receiver.ExpectMsg {key = key; value = Some value} |> ignore
-
-[<Test>]
 let ``query for non-existing value gives correct result`` () =
     TestKit.testDefault <| fun tk ->
-        let receiver = tk.CreateTestProbe "receiver"
         let storage = startStorageActor tk.Sys
-        let key = "key"
         
+        let key = "key"
+        let receiver = tk.CreateTestProbe "receiver"
         storage <! Query {|key = key; receiver = typed receiver|}
         let response = receiver.ExpectMsg<Response> ()
         response.key |> shouldEqual key
@@ -38,8 +26,7 @@ let ``query for existing value gives correct result`` () =
         let storage = startStorageActor tk.Sys
         let key = "key"
         let value = "value"
-        storage <! Update {|key = key; value = value; receiver = typed receiver|}
-        receiver.ExpectMsg {key = key; value = Some value} |> ignore
+        storage <! Update {|key = key; value = value|}
         
         storage <! Query {|key = key; receiver = typed receiver|}
         let response = receiver.ExpectMsg<Response> ()
