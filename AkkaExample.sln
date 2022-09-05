@@ -7,6 +7,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blog", "Blog", "{4C5E7C9E-C11A-4D7C-991A-591EBDC72A5A}"
 ProjectSection(SolutionItems) = preProject
 	Blog\01_basic-actor.md = Blog\01_basic-actor.md
+	Blog\02_Wakka.md = Blog\02_Wakka.md
+	Blog\Readme.txt = Blog\Readme.txt
 EndProjectSection
 EndProject
 Global
